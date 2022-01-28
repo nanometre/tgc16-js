@@ -3,15 +3,15 @@ const prompt = require('prompt-sync')()
 function printGrid(grid) {
     for (let row of grid) {
         console.log(`${row[0]} ${row[1]} ${row[2]}`)
-        }
     }
+}
 
 // input postion into grid.
 function inputInGrid(row, col) {
     while (true) {
         if (currentGrid[row][col] == 0) {
             if (currentPlayer == 'p1') {
-                currentGrid[row][col]= 1
+                currentGrid[row][col] = 1
                 break
             } else {
                 currentGrid[row][col] = 2
@@ -24,7 +24,7 @@ function inputInGrid(row, col) {
             continue
         }
     }
-} 
+}
 
 // get row input from player
 function getRow() {
@@ -44,16 +44,54 @@ function getCol() {
 }
 
 // evaluate grid if there are winners
-function evalGrid(currentGrid) {
-    
+function evalGrid(grid) {
+    // horizontal win condition
+    for (let arr of grid) {
+        if (arr[0] == arr[1] && arr[1] == arr[2] && (arr[0] == 1 || arr[0] == 2)) {
+            printWinner()
+        } else {
+            continue
+        }
+    }
+
+    // vertical win condition
+    if (grid[0][0] == grid[1][0] && grid[1][0] == grid[2][0] && (grid[0][0] == 1 || grid[0][0] == 2)) {
+        printWinner()
+    } else if (grid[0][1] == grid[1][1] && grid[1][1] == grid[2][1] && (grid[0][1] == 1 || grid[0][1] == 2)) {
+        printWinner()
+    } else if (grid[0][2] == grid[1][2] && grid[1][2] == grid[2][2] && (grid[0][2] == 1 || grid[0][2] == 2)) {
+        printWinner()
+    }
+
+    // diagonal win condition
+    // \ win condition
+    if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] && (grid[0][0] == 1 || grid[0][0] == 2)) {
+        printWinner()
+    // / win condition    
+    } else if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0] && (grid[0][2] == 1 || grid[0][2] == 2)) {
+        printWinner()
+    }
+}
+
+// print winner
+function printWinner() {
+    if (currentPlayer == 'p1') {
+        console.log('Player 1 wins!')
+        process.exit(0)
+    } else {
+        console.log('Player 2 wins!')
+        process.exit(0)
+    }
 }
 
 // initialise variables
 let currentTurn = 1
 let currentPlayer = ''
-let currentGrid = [[0,0,0],
-                   [0,0,0],
-                   [0,0,0]]
+let currentGrid = [[0, 0, 0],
+                   [0, 0, 0],
+                   [0, 0, 0]]
+
+// main code
 while (true) {
     currentPlayer = 'p1'
     console.log("Player 1's turn")
@@ -62,8 +100,9 @@ while (true) {
     inputInGrid(p1row, p1col)
     currentTurn += 1
     printGrid(currentGrid)
+    evalGrid(currentGrid)
 
-    // end condition if there's no winner. player 1 will take the last turn
+    // end condition if there's no winner. when 10 turns have passed. player 1 will take the last turn
     if (currentTurn == 10) {
         console.log('Board is full. There is no winner!')
         break
@@ -76,4 +115,5 @@ while (true) {
     inputInGrid(p2row, p2col)
     currentTurn += 1
     printGrid(currentGrid)
+    evalGrid(currentGrid)
 }
