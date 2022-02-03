@@ -1,0 +1,4 @@
+chicken,2.50,3
+rice,1.50,4
+apples,3.00,3
+chicken soup,4.50,2
