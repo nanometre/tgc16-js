@@ -13,7 +13,9 @@ let fruits_price = {
 let total_price = 0
 
 for (let f of fruits) {
-    total_price += fruits_price[f.toLowerCase()]
+    if (f.toLowerCase().trim() in fruits_price) { //.trim() removes end whitespaces from line
+        total_price += fruits_price[f.toLowerCase().trim()]
+    }
 }
 
 console.log('The total price of the fruits is:', total_price)
